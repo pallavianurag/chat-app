@@ -7,6 +7,7 @@ const EditableInput = ({
     label=null,
     placeholder='Write your value',
     emptyMsg='Input is empty',
+    wrapperClassName="",
     ...inputProps
 
 }) => {
@@ -35,7 +36,7 @@ const EditableInput = ({
     }
 
     return (
-        <div>
+        <div className={wrapperClassName}>
             {label}
             <InputGroup>
             <Input {...inputProps} 
@@ -44,9 +45,10 @@ const EditableInput = ({
              <InputGroup.Button onClick={onEditClick} >
                 <Icon icon={isEditable ?'close' : 'edit2' } />
              </InputGroup.Button>
-             <InputGroup.Button onClick={onSaveClick} >
+             {isEditable && <InputGroup.Button onClick={onSaveClick} >
                 <Icon icon='check' />
-             </InputGroup.Button>
+             </InputGroup.Button>}
+             
              </InputGroup>
         </div>
     )

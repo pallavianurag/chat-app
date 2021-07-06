@@ -5,16 +5,17 @@ import { database } from '../../../misc/firebase'
 import { useParams } from 'react-router'
 import {useProfile} from '../../../context/profile.context'
 function assembleMessage(profile, chatId){
+    console.log('asemble msg profile', profile);
         return{
             roomId: chatId,
             author:{
                 name: profile.name,
                 uid:profile.uid,
-                createdAt:profile.createdAt,
-                ...(profile.avatar ?{avatar:profile.avatar} : {}),
+                createdAt: profile.createdAt,
+                ...(profile.avatar ? {avatar:profile.avatar} : {}),
             },
-            createdAt:firebase.database.ServerValue.TIMESTAMP,
-        }
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+        };
 } 
 
 const Bottom = () => {
@@ -47,8 +48,14 @@ const Bottom = () => {
             setIsLoading(false)
 
         }catch(err){
-            Alert.error(err.message)
+            Alert.error(err.message,4000)
             setIsLoading(false)
+        }
+    }
+    const onKeyDown=(ev)=>{
+        if(ev.KeyCode === 13){
+            ev.preventDefault();
+            onSendClick();
         }
     }
     
@@ -56,7 +63,8 @@ const Bottom = () => {
         <div>
             <InputGroup>
             <Input placeholder="Write a message here..."
-             value={input} onChange={onInputChange} />
+             value={input} onChange={onInputChange} 
+             onKeyDown={onKeyDown}/>
             <InputGroup.Button color="blue" appearance="primary"
             onClick={onSendClick}
             disabled={isLoading}>
